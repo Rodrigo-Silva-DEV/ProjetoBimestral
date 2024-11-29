@@ -1,30 +1,68 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
+  <NavbarMain :logo="logo_src" :alt="app_name"/>
   <router-view/>
+  <FooterMain/>
 </template>
 
+<script>
+import FooterMain from './components/FooterMain.vue';
+import NavbarMain from './components/NavbarMain.vue';
+
+  export default{
+  components:{
+    NavbarMain,
+    FooterMain
+  },
+  data(){
+    return{
+      logo_src: "/img/logo.png",
+      app_name: "Pele&Pluma"
+    }
+  }
+  }
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+* {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-nav {
-  padding: 30px;
-}
+    .main-container{
+      margin: 50px;
+      min-height: 500px;
+    }
 
-nav a {
+    h1{
+      text-align: center;
+      font-size: 42px;
+      margin-bottom: 30px;
+    }
+
+    /* Botão Estilizado */
+.button-styled {
+  background: linear-gradient(to right, rgb(132, 0, 255), rgb(90, 0, 170)); /* Degradê */
+  color: white; /* Texto branco */
+  border: none;
+  padding: 10px 20px; /* Tamanho do botão */
+  font-size: 16px;
   font-weight: bold;
-  color: #2c3e50;
+  border-radius: 5px; /* Arredondamento */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s; /* Animações */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Sombra */
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+.button-styled:hover {
+  transform: scale(1.05); /* Efeito de leve zoom */
+  background: linear-gradient(to right, rgb(90, 0, 170), rgb(132, 0, 255)); /* Inverte o degradê */
 }
+
+.button-styled:active {
+  transform: scale(0.95); /* Efeito ao clicar */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Reduz a sombra */
+}
+
 </style>

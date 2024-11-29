@@ -1,0 +1,34 @@
+{
+  "produtos": [
+    {
+      "id": "1",
+      "nome": "Produto 1",
+      "preco": 99.99,
+      "imagem": "/img/produto1.jpg"
+    },
+    {
+      "id": "2",
+      "nome": "Produto 2",
+      "preco": 49.99,
+      "imagem": "/img/produto2.jpg"
+    },
+    {
+      "id": "3",
+      "nome": "Produto 3",
+      "preco": 120.99,
+      "imagem": "/img/produto3.jpg"
+    },
+    {
+      "id": "b978",
+      "nome": "Felipy Souza",
+      "preco": 0,
+      "imagem": "a"
+    },
+    {
+      "id": "de23",
+      "nome": "",
+      "preco": 0,
+      "imagem": ""
+    }
+  ]
+}
