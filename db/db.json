@@ -1,34 +1,34 @@
 {
   "produtos": [
     {
-      "id": "1",
-      "nome": "Produto 1",
-      "preco": 99.99,
-      "imagem": "/img/produto1.jpg"
+      "id": 1,
+      "nome": "Kit Tinta Profissional Black",
+      "descricao": "Kit completo de tintas profissionais para tatuagem na cor preta",
+      "preco": 129.99,
+      "imagem": "",
+      "dataValidade": "2025-12-31",
+      "quantidade": 50,
+      "especificacoes": {
+        "marca": "TattoPro",
+        "volume": "10ml por frasco",
+        "tipoTinta": "Profissional",
+        "compatibilidade": "Todas as máquinas de tatuagem"
+      }
     },
     {
-      "id": "2",
-      "nome": "Produto 2",
-      "preco": 49.99,
-      "imagem": "/img/produto2.jpg"
-    },
-    {
-      "id": "3",
-      "nome": "Produto 3",
-      "preco": 120.99,
-      "imagem": "/img/produto3.jpg"
-    },
-    {
-      "id": "b978",
-      "nome": "Felipy Souza",
-      "preco": 0,
-      "imagem": "a"
-    },
-    {
-      "id": "de23",
-      "nome": "",
-      "preco": 0,
-      "imagem": ""
+      "id": 2,
+      "nome": "Máquina Rotativa Profissional",
+      "descricao": "Máquina de tatuagem rotativa de alta performance",
+      "preco": 799.99,
+      "imagem": "", 
+      "dataValidade": "2026-06-30",
+      "quantidade": 20,
+      "especificacoes": {
+        "marca": "InkMaster",
+        "peso": "120g",
+        "motor": "Brushless DC",
+        "voltagem": "RCA"
+      }
     }
   ]
 }

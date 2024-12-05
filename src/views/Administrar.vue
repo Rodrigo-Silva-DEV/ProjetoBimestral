@@ -1,27 +1,26 @@
 <template>
   <div class="main-container">
-    <!-- Contêiner para produtos -->
     <div class="produtos-container">
       <Produto
         v-for="produto in produtos"
         :key="produto.id"
-        :nome="produto.nome"
+        :name="produto.nome"
         :preco="produto.preco"
         :imagem="produto.imagem"
         @adicionar-ao-carrinho="adicionarProduto"
-        @editar-produto="editarProduto"
+        @editar-produto="abrirEdicaoProduto"
         @remover-produto="removerProduto"
       />
     </div>
 
     <!-- Formulário para adicionar ou editar produto -->
     <div class="form-produto">
-      <h2>{{ isEdit ? 'Editar Produto' : 'Adicionar Produto' }}</h2>
-      <input v-model="produtoForm.nome" placeholder="Nome do produto" />
-      <input v-model="produtoForm.preco" placeholder="Preço do produto" type="number" />
-      <input v-model="produtoForm.imagem" placeholder="URL da imagem" />
-      <button @click="isEdit ? atualizarProduto() : criarProduto()">
-        {{ isEdit ? 'Atualizar Produto' : 'Criar Produto' }}
+      <h2>{{ modoEdicao ? 'Editar Produto' : 'Adicionar Produto' }}</h2>
+      <input v-model="formularioProduto.nome" placeholder="Nome do produto" />
+      <input v-model="formularioProduto.preco" placeholder="Preço do produto" type="number" />
+      <input v-model="formularioProduto.imagem" placeholder="URL da imagem" />
+      <button @click="modoEdicao ? atualizarProduto() : criarProduto()">
+        {{ modoEdicao ? 'Atualizar Produto' : 'Criar Produto' }}
       </button>
     </div>
   </div>
@@ -35,90 +34,100 @@ export default {
   components: { Produto },
   data() {
     return {
-      produtos: [], // Lista de produtos
-      carrinho: [], // Carrinho de compras
-      produtoForm: {
-        nome: '',
+      produtos: [],
+      formularioProduto: {
+        name: '',
         preco: 0,
-        imagem: '',
+        imagem: ''
       },
-      isEdit: false, // Flag para determinar se é criação ou edição
-      produtoEditado: null, // Produto sendo editado
+      modoEdicao: false,
+      produtoEmEdicao: null
     };
   },
   methods: {
-    // Carregar produtos da API
-    async carregarProdutos() {
-      try {
-        const response = await axios.get('http://localhost:3001/produtos');
-        this.produtos = response.data; // Atualiza a lista de produtos
-      } catch (error) {
-        console.error('Erro ao carregar produtos:', error);
-      }
+    // Método para abrir a edição de um produto
+    abrirEdicaoProduto(produto) {
+      // Preenche o formulário com os dados do produto selecionado
+      this.formularioProduto = { 
+        name: produto.name, 
+        preco: produto.preco, 
+        imagem: produto.imagem 
+      };
+      
+      // Marca que estamos em modo de edição
+      this.modoEdicao = true;
+      
+      // Guarda o produto original para referência
+      this.produtoEmEdicao = produto;
     },
 
-    // Adicionar produto ao carrinho
-    adicionarProduto(produto) {
-      if (!this.carrinho.some(item => item.id === produto.id)) {
-        this.carrinho.push(produto);
-        console.log('Produto adicionado ao carrinho:', produto);
-      }
-    },
-
-    // Criar um novo produto
-    async criarProduto() {
-      try {
-        const response = await axios.post('http://localhost:3001/produtos', this.produtoForm);
-        this.produtos.push(response.data); // Adiciona o produto na lista
-        this.resetForm();
-        console.log('Produto criado com sucesso:', response.data);
-      } catch (error) {
-        console.error('Erro ao criar produto:', error);
-      }
-    },
-
-    // Editar um produto
-    editarProduto(produto) {
-      this.produtoForm = { ...produto }; // Preenche o formulário com os dados do produto
-      this.isEdit = true;
-      this.produtoEditado = produto; // Guarda o produto para atualização
-    },
-
-    // Atualizar produto na API
+    // Método para atualizar o produto
     async atualizarProduto() {
       try {
-        const response = await axios.put(`http://localhost:3001/produtos/${this.produtoEditado.id}`, this.produtoForm);
-        const index = this.produtos.findIndex(p => p.id === this.produtoEditado.id);
-        if (index !== -1) {
-          this.produtos[index] = response.data; // Atualiza o produto na lista
+        // Verifica se há um produto em edição
+        if (!this.produtoEmEdicao) {
+          console.error('Nenhum produto selecionado para edição');
+          return;
         }
-        this.resetForm();
-        this.isEdit = false;
-        console.log('Produto atualizado com sucesso:', response.data);
+
+        // Faz a requisição PUT para atualizar o produto
+        const response = await axios.put(
+          `http://localhost:3001/produtos/${this.produtoEmEdicao.id}`, 
+          this.formularioProduto
+        );
+
+        // Encontra o índice do produto na lista
+        const index = this.produtos.findIndex(
+          p => p.id === this.produtoEmEdicao.id
+        );
+
+        // Atualiza o produto na lista
+        if (index !== -1) {
+          this.produtos[index] = response.data;
+        }
+
+        // Reseta o formulário e sai do modo de edição
+        this.resetarFormulario();
       } catch (error) {
         console.error('Erro ao atualizar produto:', error);
       }
     },
 
-    // Remover produto da API
-    async removerProduto(produto) {
+    // Método para resetar o formulário
+    resetarFormulario() {
+      this.formularioProduto = {
+        name: '',
+        preco: 0,
+        imagem: ''
+      };
+      this.modoEdicao = false;
+      this.produtoEmEdicao = null;
+    },
+
+    // Outros métodos existentes (criarProduto, carregarProdutos, etc.)
+    async criarProduto() {
       try {
-        await axios.delete(`http://localhost:3001/produtos/${produto.id}`);
-        this.produtos = this.produtos.filter(p => p.id !== produto.id); // Remove o produto da lista
-        console.log('Produto removido com sucesso:', produto);
+        const response = await axios.post('http://localhost:3001/produtos', this.formularioProduto);
+        this.produtos.push(response.data);
+        this.resetarFormulario();
       } catch (error) {
-        console.error('Erro ao remover produto:', error);
+        console.error('Erro ao criar produto:', error);
       }
     },
 
-    // Resetar o formulário
-    resetForm() {
-      this.produtoForm = { nome: '', preco: 0, imagem: '' };
-    },
+    // Método para carregar produtos
+    async carregarProdutos() {
+      try {
+        const response = await axios.get('http://localhost:3001/produtos');
+        this.produtos = response.data;
+      } catch (error) {
+        console.error('Erro ao carregar produtos:', error);
+      }
+    }
   },
   mounted() {
-    this.carregarProdutos(); // Carrega os produtos assim que o componente é montado
-  },
+    this.carregarProdutos();
+  }
 };
 </script>
 

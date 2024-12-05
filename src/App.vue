@@ -1,10 +1,11 @@
 <template>
-  <NavbarMain :logo="logo_src" :alt="app_name"/>
+  <NavbarMain :logo="logo_src" :alt="app_name" v-if="notIsLoginPage"/>
   <router-view/>
-  <FooterMain/>
+  <FooterMain v-if="notIsLoginPage"/>
 </template>
 
 <script>
+import { computed } from 'vue';
 import FooterMain from './components/FooterMain.vue';
 import NavbarMain from './components/NavbarMain.vue';
 
@@ -18,11 +19,26 @@ import NavbarMain from './components/NavbarMain.vue';
       logo_src: "/img/logo.png",
       app_name: "Pele&Pluma"
     }
+  },
+  computed:{
+    notIsLoginPage(){
+      return this.$route.name !== "login";
+    }
   }
   }
+  
 </script>
-
 <style>
+.produtos-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* Permite que os produtos se movam para a próxima linha se não houver espaço */
+  gap: 40px; /* Espaço entre os produtos */
+  margin: 30px auto;
+  width: 100%; /* Garante que o contêiner ocupe toda a largura disponível */
+  justify-content: center;
+  align-items: center;
+}
 * {
         font-family: Arial, Helvetica, sans-serif;
         margin: 0;
@@ -31,7 +47,7 @@ import NavbarMain from './components/NavbarMain.vue';
     }
 
     .main-container{
-      margin: 50px;
+      margin: 60px;
       min-height: 500px;
     }
 

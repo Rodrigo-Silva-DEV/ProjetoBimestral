@@ -58,7 +58,7 @@
                         <router-link to="/">
                             <button>Cadastrar</button>
                         </router-link>
-                        <router-link to="/">
+                        <router-link to="/login">
                             <button>Logar</button>
                         </router-link>
                     </div>

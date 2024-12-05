@@ -3,7 +3,7 @@
     <img :src="imagem" alt="Imagem do Produto" />
     <h2>{{ nome }}</h2>
     <p>Preço: R$ {{ preco.toFixed(2) }}</p>
-    <button class="button-styled" @click="$emit('adicionar-ao-carrinho', { nome, preco, imagem })">
+    <button class="button-styled" @click="$emit('adicionar-ao-carrinho', {nome, preco, imagem })">
       Adicionar ao Carrinho
     </button>
   </div>
@@ -112,3 +112,4 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 </style>
+
